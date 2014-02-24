@@ -33,8 +33,15 @@ for k = 1 : size(filenames,1)
     set(h2, 'CData', masked_frame_blur);
     drawnow('expose');
     
-    [grey_back, prev_frames] = update_background(k, grey_back, prev_frames, mask_blur, scene, BACKGROUND_LOOKBACK, READJUSTMENT_THRESH);
-   
+    prev_frames{k} = reshape(mask_blur, 1, X*Y);
+    if k > BACKGROUND_LOOKBACK
+        diff = double(sum(abs(prev_frames{k-BACKGROUND_LOOKBACK} - prev_frames{k}))) / double((X*Y));
+        if diff <= READJUSTMENT_THRESH
+            %disp('bu');
+            grey_back = scene;
+        end
+    end
+    
     %[~, num_objects] = size(get_objects(mask_blur, 10));
     conn_comp = bwconncomp(mask_blur);
     
