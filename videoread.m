@@ -1,10 +1,10 @@
 
-file_dir = './'; %put here one of the folder locations with images;
+file_dir = './GOPR0005/'; %put here one of the folder locations with images;
 filenames = dir([file_dir '*.jpg']);
 
 frame = imread([file_dir filenames(1).name]);
-
-grey_back = rgb2gray(imread(filenames(1).name));
+filenames(1).name
+grey_back = rgb2gray(imread([file_dir filenames(1).name]));
 
 %figure(1); h1 = imshow(bwmorph(grey_back, 'clean', 1));
 %figure(1); h1 = imshow(frame);
@@ -12,6 +12,7 @@ grey_back = rgb2gray(imread(filenames(1).name));
 figure(2); h2 = imshow(apply_mask(generate_keying_mask(frame, grey_back, 0, 0), frame));
 
 READJUSTMENT_THRESH = 1e-4;
+BACKGROUND_LOOKBACK = 5;
 [X, Y] = size(grey_back);
 [N, x] = size(filenames);
 prev_frames = {};
@@ -20,7 +21,7 @@ object_history = {};
 object_history{N} = {};
 
 % Read one frame at a time.
-for k = 200 : size(filenames,1)
+for k = 1 : size(filenames,1)
     frame = imread([file_dir filenames(k).name]);
     scene = rgb2gray(frame);
     %mask = generate_keying_mask(scene, grey_back, 0, 0);
@@ -33,8 +34,8 @@ for k = 200 : size(filenames,1)
     drawnow('expose');
     
     prev_frames{k} = reshape(mask_blur, 1, X*Y);
-    if k > 205
-        diff = double(sum(abs(prev_frames{k-5} - prev_frames{k}))) / double((X*Y));
+    if k > BACKGROUND_LOOKBACK
+        diff = double(sum(abs(prev_frames{k-BACKGROUND_LOOKBACK} - prev_frames{k}))) / double((X*Y));
         if diff <= READJUSTMENT_THRESH
             %disp('bu');
             grey_back = scene;

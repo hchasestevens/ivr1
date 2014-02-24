@@ -62,7 +62,7 @@ function [ thresholded_diff ] = generate_keying_mask( scene, background, dbg, bl
     
     
     
-    thresholded_diff = bwmorph(thresholded_diff, 'majority', 2);
+    thresholded_diff = bwmorph(thresholded_diff, 'majority', 4);
     %thresholded_diff = bwmorph(thresholded_diff, 'erode', EROSIONS);
     %thresholded_diff = bwmorph(thresholded_diff, 'thicken', THICKENINGS);
     %thresholded_diff = bwmorph(thresholded_diff, 'clean', 1);

@@ -1,5 +1,5 @@
 
-file_dir = ''; %put here one of the folder locations with images;
+file_dir = './GOPR0005/'; %put here one of the folder locations with images;
 filenames = dir([file_dir '*.jpg']);
 
 frame = imread([file_dir filenames(1).name]);
