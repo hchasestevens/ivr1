@@ -11,8 +11,9 @@ grey_back = rgb2gray(imread([file_dir filenames(1).name]));
 %figure(1); h1 = imshow(apply_mask(generate_keying_mask(frame, grey_back, 0, 0), frame));
 figure(2); h2 = imshow(apply_mask(generate_keying_mask(frame, grey_back, 0, 0), frame));
 
-READJUSTMENT_THRESH = 1e-4;
+READJUSTMENT_THRESH = 1e-5;
 BACKGROUND_LOOKBACK = 5;
+OBJECT_LOOKBACK = 5;
 [X, Y] = size(grey_back);
 [N, x] = size(filenames);
 prev_frames = {};
@@ -29,21 +30,17 @@ for k = 1 : size(filenames,1)
     %masked_frame = apply_mask(mask, frame);
     masked_frame_blur = apply_mask(mask_blur, frame);
     
+    conn_comp = bwconncomp(mask_blur);
+    
+    object_history = update_objects(k, object_history, conn_comp, OBJECT_LOOKBACK);
+    
     %from original:
     set(h2, 'CData', masked_frame_blur);
     drawnow('expose');
     
-    prev_frames{k} = reshape(mask_blur, 1, X*Y);
-    if k > BACKGROUND_LOOKBACK
-        diff = double(sum(abs(prev_frames{k-BACKGROUND_LOOKBACK} - prev_frames{k}))) / double((X*Y));
-        if diff <= READJUSTMENT_THRESH
-            %disp('bu');
-            grey_back = scene;
-        end
-    end
-    
+    [grey_back, prev_frames] = update_background(k, grey_back, prev_frames, mask_blur, scene, BACKGROUND_LOOKBACK, READJUSTMENT_THRESH);
+   
     %[~, num_objects] = size(get_objects(mask_blur, 10));
-    conn_comp = bwconncomp(mask_blur);
     
     %clean_frame = bwmorph(frame, 'clean', 1);
     
