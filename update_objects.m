@@ -7,19 +7,7 @@ function [ history, new_objs ] = update_objects( time, history, conn_comp, lookb
     
     cc_centers = cat(1, props.Centroid);
 
-    % Marking cc centers (for later use):
-%     for cc=1:Z,
-%         [T, ~] = size(conn_comp.PixelIdxList{Z});
-%         obj_x = 0;
-%         obj_y = 0;
-%         for i=1:T,
-%             obj_x = obj_x + mod(conn_comp.PixelIdxList{Z}(T), X);
-%             obj_y = obj_y + (conn_comp.PixelIdxList{Z}(T) / X);
-%         end
-%         obj_x = cast(obj_x / T, 'uint32');
-%         obj_y = cast(floor(obj_y) / T, 'uint32');
-%         cc_centers(Z) = [obj_x, obj_y];
-%     end
+
     new_objs = 0;
 
     history{time} = {};
@@ -49,7 +37,7 @@ function [ history, new_objs ] = update_objects( time, history, conn_comp, lookb
         
         new_objs = new_objs + no_obj_match;
         
-        history{time}{z} = struct('x', comp_x, 'y', comp_y, 'id', lowest_dist_id);
+        history{time}{z} = struct('x', comp_x, 'y', comp_y, 'id', lowest_dist_id, 'y_apex', -1);
     end
     
 end

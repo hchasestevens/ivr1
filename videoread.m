@@ -1,5 +1,5 @@
 
-file_dir = './GOPR0004/'; %put here one of the folder locations with images;
+file_dir = './GOPR0005/'; %put here one of the folder locations with images;
 filenames = dir([file_dir '*.jpg']);
 
 frame = imread([file_dir filenames(1).name]);
@@ -14,34 +14,46 @@ figure(2); h2 = imshow(apply_mask(generate_keying_mask(frame, grey_back, 0, 0), 
 READJUSTMENT_THRESH = 1e-5;
 BACKGROUND_LOOKBACK = 5;
 OBJECT_LOOKBACK = 5;
-OBJECT_LINKING_DIST_THRESH = 15; % sqrt(10^2 + 10^2 + 3^3)
+OBJECT_LINKING_DIST_THRESH = 19; % sqrt(13^2 + 13^2 + 3^3)
+INITIAL_MEDIAN_FRAMES = 25;
 [X, Y] = size(grey_back);
 [N, x] = size(filenames);
 prev_frames = {};
 prev_frames{N} = []; % preallocation
+initial_back_frames = zeros(INITIAL_MEDIAN_FRAMES, X, Y);
 object_history = {};
 object_history{N} = {};
 
 % Read one frame at a time.
 for k = 1 : size(filenames,1)
+  
     new_objs = 0;
     frame = imread([file_dir filenames(k).name]);
     scene = rgb2gray(frame);
-    %mask = generate_keying_mask(scene, grey_back, 0, 0);
+    
+%     if k <= INITIAL_MEDIAN_FRAMES
+%         initial_back_frames(k, :, :) = scene;
+%     end
+%     
+%     if k == INITIAL_MEDIAN_FRAMES + 1
+%         grey_back = median(initial_back_frames, 1);
+%         grey_back = reshape(grey_back, X, Y);
+%     end
+    
     mask_blur = generate_keying_mask(scene, grey_back, 0, 1);
-    %masked_frame = apply_mask(mask, frame);
     masked_frame_blur = apply_mask(mask_blur, frame);
     
     conn_comp = bwconncomp(mask_blur);
     
     [object_history, new_objs] = update_objects(k, object_history, conn_comp, OBJECT_LOOKBACK, OBJECT_LINKING_DIST_THRESH);
+    assign_apexes(k, object_history);
     
     %from original:
     set(h2, 'CData', masked_frame_blur);
     drawnow('expose');
     
     [grey_back, prev_frames] = update_background(k, grey_back, prev_frames, mask_blur, scene, BACKGROUND_LOOKBACK, READJUSTMENT_THRESH);
-   
+    
     %[~, num_objects] = size(get_objects(mask_blur, 10));
     
     %clean_frame = bwmorph(frame, 'clean', 1);
