@@ -17,7 +17,6 @@ function [ history, new_objs ] = update_objects( time, history, conn_comp, lookb
         lowest_dist = 1000000;
         no_obj_match = 1;
         lowest_dist_id = strcat(num2str(time), '_', num2str(z));
-        lowest_dist_apexfound = 0;
         
         for time_slice=max(1, time - lookback - 1):time-1
             num_objs = max(size(history{time_slice}));
@@ -30,7 +29,6 @@ function [ history, new_objs ] = update_objects( time, history, conn_comp, lookb
                 % found new closest obj from our sordid past
                 if (dist < lowest_dist) && (dist < dist_threshold)
                     lowest_dist_id = history{time_slice}{i}.id;
-                    lowest_dist_apexfound = history{time_slice}{i}.apex_found;
                     lowest_dist = dist;
                     no_obj_match = 0;
                 end
@@ -40,12 +38,10 @@ function [ history, new_objs ] = update_objects( time, history, conn_comp, lookb
         new_objs = new_objs + no_obj_match;
         if no_obj_match == 1
             apex_found = 0;
-        else
-            apex_found = lowest_dist_apexfound;
-        end
+        e
         
         %store y of last seen instance of obj
-        history{time}{z} = struct('x', comp_x, 'y', comp_y, 'id', lowest_dist_id, 'y_apex', -1, 'apex_found', apex_found);
+        history{time}{z} = struct('x', comp_x, 'y', comp_y, 'id', lowest_dist_id, 'y_apex', -1, 'apex_found', 0);
     end
     
 end

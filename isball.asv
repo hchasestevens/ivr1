@@ -1,0 +1,7 @@
+function [ yeah_it_is_a_ball ] = isball( obj )
+%UNTITLED4 Summary of this function goes here
+%   Detailed explanation goes here
+    ball_status
+
+end
+

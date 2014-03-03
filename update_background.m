@@ -1,4 +1,4 @@
-function [ grey_back, prev_frames ] = update_background( frame_num, grey_back, prev_frames, mask, current_scene, background_lookback, readjustment_threshold )
+function [ grey_back, prev_frames ] = update_background( frame_num, grey_back, prev_frames, mask, current_scene, background_lookback, readjustment_threshold, initial_frame )
 
     [X, Y] = size(mask);
     CHUNKS = 8; % number of horizontal strips to split image into
@@ -7,7 +7,7 @@ function [ grey_back, prev_frames ] = update_background( frame_num, grey_back, p
     temp_grey = reshape(grey_back, 1, X*Y);
     temp_scene = reshape(current_scene, 1, X*Y);
     
-    if frame_num > background_lookback
+    if frame_num > background_lookback + initial_frame
         for chunk=1:CHUNKS,
             i = 1+((chunk - 1)*increment);
             j = chunk*increment;

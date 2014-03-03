@@ -43,8 +43,6 @@ for k = INITIAL_K : size(filenames,1)
 %     end
     
     mask_blur = generate_keying_mask(scene, grey_back, 0, 1);
-    mask_blur = bwdist(mask_blur) <= 8;
-    
     masked_frame_blur = apply_mask(mask_blur, frame);
     
     conn_comp = bwconncomp(mask_blur);
@@ -56,7 +54,7 @@ for k = INITIAL_K : size(filenames,1)
     for i=1:X,
         obj = object_history{k}{i};
         if obj.apex_found == 1
-            masked_frame_blur = insertMarker(masked_frame_blur, [obj.x, obj.y]);
+            masked_frame_bluinsertMarker(masked_frame_blur, [obj.x, obj.y]);
             object_history{k}{i} = struct('x', obj.x, 'y', obj.y, 'id', obj.id, 'y_apex', obj.y_apex, 'apex_found', 2);
             pause_flag = 1;
             %obj.apex_found = 2;

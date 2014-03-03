@@ -22,9 +22,13 @@ function [ object_history_new ] = assign_apexes( time, object_history)
                 matched_obj = object_history{time - 1}{matching_id};
                 vel = (obj.y - matched_obj.y);
                 t = vel / GRAVITY;
-                if abs(t) < 0.05 && obj.apex_found == 0 && isball(obj)
-                    object_history{time}{obj_i} = struct('x', obj.x, 'y', obj.y, 'id', obj.id, 'y_apex', obj.y_apex, 'apex_found', 1);
+                if abs(t) < 0.05 && obj.apex_found == 0
+                    object_history{time}{obj_i} = 
+                    obj.apex_found = 1;
+                    disp('apex');
                 end
+%                 obj.y_apex = (vel * t - .5 * GRAVITY * t^2);
+%                 obj.y_apex;
             end
         end
     end
