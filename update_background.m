@@ -1,8 +1,7 @@
 function [ grey_back, prev_frames ] = update_background( frame_num, grey_back, prev_frames, mask, current_scene, background_lookback, readjustment_threshold )
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+
     [X, Y] = size(mask);
-    CHUNKS = 8;
+    CHUNKS = 8; % number of horizontal strips to split image into
     increment = X * Y / CHUNKS;
     prev_frames{frame_num} = reshape(mask, 1, X*Y);
     temp_grey = reshape(grey_back, 1, X*Y);
