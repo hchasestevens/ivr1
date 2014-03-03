@@ -1,5 +1,5 @@
 
-file_dir = './GOPR0002/'; %put here one of the folder locations with images;
+file_dir = './GOPR0005/'; %put here one of the folder locations with images;
 filenames = dir([file_dir '*.jpg']);
 
 frame = imread([file_dir filenames(1).name]);
@@ -13,11 +13,13 @@ figure(2); h2 = imshow(apply_mask(generate_keying_mask(frame, grey_back, 0, 0), 
 
 READJUSTMENT_THRESH = 1e-5;
 BACKGROUND_LOOKBACK = 5;
-OBJECT_LOOKBACK = 5;
+OBJECT_LOOKBACK = 8;
 OBJECT_LINKING_DIST_THRESH = 19; % sqrt(13^2 + 13^2 + 3^3)
 INITIAL_MEDIAN_FRAMES = 25;
 INITIAL_K = 200;
 [X, Y] = size(grey_back);
+global frame_x
+frame_x = X;
 [N, x] = size(filenames);
 prev_frames = {};
 prev_frames{N} = []; % preallocation
@@ -43,7 +45,7 @@ for k = INITIAL_K : size(filenames,1)
 %     end
     
     mask_blur = generate_keying_mask(scene, grey_back, 0, 1);
-    mask_blur = bwdist(mask_blur) <= 8;
+    mask_blur = bwdist(mask_blur) <= 5;
     
     masked_frame_blur = apply_mask(mask_blur, frame);
     
@@ -56,15 +58,15 @@ for k = INITIAL_K : size(filenames,1)
     for i=1:X,
         obj = object_history{k}{i};
         if obj.apex_found == 1
-            masked_frame_blur = insertMarker(masked_frame_blur, [obj.x, obj.y]);
-            object_history{k}{i} = struct('x', obj.x, 'y', obj.y, 'id', obj.id, 'y_apex', obj.y_apex, 'apex_found', 2);
+            frame = insertMarker(frame, [obj.x, obj.y]);
+            object_history{k}{i} = struct('x', obj.x, 'y', obj.y, 'id', obj.id, 'y_apex', obj.y_apex, 'apex_found', 2, 'isball', obj.isball);
             pause_flag = 1;
             %obj.apex_found = 2;
         end
     end
     
     %from original:
-    set(h2, 'CData', masked_frame_blur);
+    set(h2, 'CData', frame);
     drawnow('expose');
     if pause_flag == 1
         pause(3);
