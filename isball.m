@@ -16,20 +16,13 @@ function [ ball_status ] = isball(center_x, center_y, idxlist)
         [X, Y] = getxy(idxlist(i));
         dx = abs(center_x - X);
         dy = abs(center_y - Y);
+        
         if double(dx^2+dy^2) <= radius,
             inside = inside + 1;
         end
         
     end
-    
-    radius;
-    
-    [dx dy];
-    
-    [inside area];
-  
-    double(inside)/double(area);
-    
+
     if double(inside)/double(area) > double(THRESHOLD)
         ball_status = CONFIRMED;
     end

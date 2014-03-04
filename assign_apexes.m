@@ -3,6 +3,8 @@ function [ object_history_new ] = assign_apexes( time, object_history)
 %   Detailed explanation goes here
         % Marking cc centers (for later use):
     
+    object_history_new = object_history;
+    
     Z = max(size(object_history{time}));
     
     GRAVITY = 9.8;
@@ -12,27 +14,28 @@ function [ object_history_new ] = assign_apexes( time, object_history)
         for obj_i=1:Z,
             
             obj = object_history{time}{obj_i};
-            if obj.isball
-                T = max(size(object_history{time - 1}));
-                matching_id = '';
-                for i=1:T,
-                    if strcmp(object_history{time - 1}{i}.id, obj.id)
-                        matching_id = T;
-                    end
+
+            T = max(size(object_history{time - 1}));
+            matching_id = '';
+            for i=1:T,
+                if strcmp(object_history{time - 1}{i}.id, obj.id)
+                    matching_id = T;
                 end
-                if strcmp(matching_id, '')
-                else
-                    matched_obj = object_history{time - 1}{matching_id};
-                    vel = (obj.y - matched_obj.y);
-                    t = vel / GRAVITY;
-                    if abs(t) < TIME_DIFF && obj.apex_found == 0
-                        object_history{time}{obj_i} = struct('x', obj.x, 'y', obj.y, 'id', obj.id, 'y_apex', obj.y_apex, 'apex_found', 1, 'isball', obj.isball);
+            end
+            
+            if strcmp(matching_id, '')
+            else
+                matched_obj = object_history{time - 1}{matching_id};
+                vel = (obj.y - matched_obj.y);
+                t = vel / GRAVITY;
+
+                if abs(t) < TIME_DIFF && obj.apex_found == 0
+                    if isball(obj.x, obj.y, obj.idxlist)
+                        object_history_new{time}{obj_i}.apex_found = 1;
                     end
                 end
             end
         end
     end
-    
-    object_history_new = object_history;
 end
 

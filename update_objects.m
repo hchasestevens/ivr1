@@ -35,9 +35,7 @@ function [ history, new_objs ] = update_objects( time, history, conn_comp, lookb
                 end
             end
         end
-        
-        ball_status = isball(comp_x, comp_y, conn_comp.PixelIdxList{z});
-        
+
         new_objs = new_objs + no_obj_match;
         if no_obj_match == 1
             apex_found = 0;
@@ -46,7 +44,7 @@ function [ history, new_objs ] = update_objects( time, history, conn_comp, lookb
         end
         
         %store y of last seen instance of obj
-        history{time}{z} = struct('x', comp_x, 'y', comp_y, 'id', lowest_dist_id, 'y_apex', -1, 'apex_found', apex_found, 'isball', ball_status);
+        history{time}{z} = struct('x', comp_x, 'y', comp_y, 'id', lowest_dist_id, 'y_apex', -1, 'apex_found', apex_found, 'idxlist', conn_comp.PixelIdxList{z});
     end
     
 end
