@@ -16,7 +16,7 @@ OBJECT_LOOKBACK = 3;
 % sqrt(10^2 + 10^2 + 2^3), based on distance calculation in update_objects
 OBJECT_LINKING_DIST_THRESH = 18; 
 
-INITIAL_FRAME = 1450;
+INITIAL_FRAME = 607;
 
 [X, Y] = size(grey_back);
 global IMG_WIDTH
