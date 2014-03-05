@@ -1,11 +1,11 @@
 function [ object_history_new ] = assign_apexes( time, object_history)
 
+    object_history_new = object_history;
+    
     if time <= 1
         % We don't have the necessary history of the objects to evaluate
         return
     end
-    
-    object_history_new = object_history;
     
     Z = max(size(object_history{time}));
     
