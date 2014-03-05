@@ -33,6 +33,6 @@ function [ thresholded_diff ] = generate_keying_mask( scene, background, dbg )
     
     threshold_indices = diff > threshold;
     thresholded_diff(threshold_indices) = 255;
-    %thresholded_diff = bwmorph(thresholded_diff, 'clean', 1);
+    thresholded_diff = bwmorph(thresholded_diff, 'clean', 1);
 end
 
