@@ -10,10 +10,10 @@ figure(1); h1 = imshow(apply_mask(generate_keying_mask(grey_back, grey_back, 0),
 READJUSTMENT_THRESH = 1e-5;
 BACKGROUND_LOOKBACK = 5;
 
-OBJECT_LINKING_DIST_THRESH = 19; % sqrt(13^2 + 13^2 + 3^3)
-OBJECT_LOOKBACK = 8;
+OBJECT_LINKING_DIST_THRESH = 19; % sqrt(10^2 + 10^2 + 2^3)
+OBJECT_LOOKBACK = 3;
 
-INITIAL_FRAME = 500;
+INITIAL_FRAME = 200;
 
 [X, Y] = size(grey_back);
 global IMG_WIDTH

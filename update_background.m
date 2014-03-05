@@ -1,7 +1,7 @@
 function [ grey_back, prev_frames ] = update_background( frame_num, grey_back, prev_frames, mask, current_scene, background_lookback, readjustment_threshold, initial_frame )
 
     [X, Y] = size(mask);
-    CHUNKS = 8; % number of horizontal strips to split image into
+    CHUNKS = 1; % number of horizontal strips to split image into
     increment = X * Y / CHUNKS;
     
     % Convert images to 1D vectors

@@ -2,7 +2,7 @@ function [ thresholded_diff ] = generate_keying_mask( scene, background, dbg )
 
     %params
     MIN_THRESHOLD = 16;
-    THRESHOLD_MULT = 0.6;
+    THRESHOLD_MULT = 0.675;
 
     %get differences between background, scene:
     diff = (max(background, scene) - min(background, scene));
