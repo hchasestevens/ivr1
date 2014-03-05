@@ -5,7 +5,7 @@ filenames = dir([file_dir '*.jpg']);
 frame = imread([file_dir filenames(1).name]);
 grey_back = rgb2gray(frame);
 
-figure(1); h1 = imshow(apply_mask(generate_keying_mask(grey_back, grey_back, 0), grey_back));
+figure(1); h1 = imshow(apply_mask(generate_keying_mask(grey_back, grey_back), grey_back));
 
 READJUSTMENT_THRESH = 1e-4;
 BACKGROUND_LOOKBACK = 5;
@@ -36,7 +36,7 @@ for k = INITIAL_FRAME : frame_count
     scene = rgb2gray(frame);
 
     % Generate the mask and expand the blobs in it
-    mask = generate_keying_mask(scene, grey_back, 0);
+    mask = generate_keying_mask(scene, grey_back);
     mask = bwdist(mask) <= 5;
     
     % Apply the mask to the frame for later display
