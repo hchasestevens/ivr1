@@ -8,15 +8,15 @@ grey_back = rgb2gray(frame);
 figure(1); h1 = imshow(apply_mask(generate_keying_mask(grey_back, grey_back), grey_back));
 
 READJUSTMENT_THRESH = 1e-4;
-BACKGROUND_LOOKBACK = 5;
+BACKGROUND_LOOKBACK = 3;
 
-OBJECT_SIZE_THRESH = [200, 5000];
+OBJECT_SIZE_THRESH = [300, 5000];
 OBJECT_LOOKBACK = 3;
 
 % sqrt(10^2 + 10^2 + 2^3), based on distance calculation in update_objects
 OBJECT_LINKING_DIST_THRESH = 18; 
 
-INITIAL_FRAME = 1;
+INITIAL_FRAME = 1450;
 
 [X, Y] = size(grey_back);
 global IMG_WIDTH
