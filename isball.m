@@ -6,11 +6,13 @@ function [ is_ball ] = isball(center_x, center_y, idxlist)
 
     is_ball = false;
     
+	% Find the radius of a circle of the same area as the object
     area = max(size(idxlist));
     radius = area / pi;
     
     pixels_inside = 0;
     
+	% Find how many pixels fall within the circle
     for i=1:area,
         [X, Y] = getxy(idxlist(i));
         dx = abs(center_x - X);
