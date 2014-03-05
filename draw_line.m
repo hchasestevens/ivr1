@@ -1,6 +1,7 @@
 function [ img ] = draw_line( img, x1, y1, x2, y2 )
     % source: http://stackoverflow.com/questions/2464637/matlab-drawing-a-line-over-a-black-and-white-image/14308558#14308558
     % distances according to both axes
+
     xn = abs(x2-x1);
     yn = abs(y2-y1);
 
@@ -13,6 +14,9 @@ function [ img ] = draw_line( img, x1, y1, x2, y2 )
         yc = y1 : sign(y2-y1) : y2;
         xc = round( interp1([y1 y2], [x1 x2], yc, 'linear') );
     end
+    
+    xc = round(xc);
+    yc = round(yc);
 
     % 2-D indexes of line are saved in (xc, yc), and
     % 1-D indexes are calculated here:

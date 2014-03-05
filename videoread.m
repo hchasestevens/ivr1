@@ -65,8 +65,11 @@ for k = INITIAL_FRAME : frame_count
         end
     end
 
+    if k > INITIAL_FRAME
+        masked_frame = show_paths(masked_frame, object_history, k, INITIAL_FRAME);
+    end
+
     % Display the frame with the mask applied
-    masked_frame = draw_line(masked_frame, 1, 1, 100, 100);
     set(h1, 'CData', masked_frame);
     drawnow('expose');
     
