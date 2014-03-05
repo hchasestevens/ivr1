@@ -4,6 +4,10 @@ function [ img ] = draw_line( img, x1, y1, x2, y2 )
 
     xn = abs(x2-x1);
     yn = abs(y2-y1);
+    
+    if (xn <= 1 || yn <= 1)
+        return;
+    end
 
     % interpolate against axis with greater distance between points;
     % this guarantees statement in the under the first point!
