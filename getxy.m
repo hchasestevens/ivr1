@@ -1,9 +1,7 @@
 function [ x, y ] = getxy( coord )
-%UNTITLED5 Summary of this function goes here
-%   Detailed explanation goes here
+	% Convert coordinate indexing into a 1D image into [X,Y] for a 2D one
     global IMG_WIDTH
     y = mod(coord, IMG_WIDTH);
     x = idivide(cast(coord, 'uint32'), cast(IMG_WIDTH, 'uint32'));
-
 end
 

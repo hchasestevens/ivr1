@@ -15,9 +15,10 @@ function [ history, new_objs ] = update_objects( time, history, conn_comp, lookb
     
     for z=1:Z,
         
+		% Check if the component is too large or too small
+		% to be considered an object
         area = max(size(conn_comp.PixelIdxList{z}));
         if area < lower_size_thresh || area > upper_size_thresh
-            %disp(max(size(conn_comp.PixelIdxList{z})))
             continue % 2small2careabout
         end
         
@@ -56,9 +57,6 @@ function [ history, new_objs ] = update_objects( time, history, conn_comp, lookb
             end
         end
         
-        % Maybe iterate here and for objects with the same id, combine?
-        % assert(lowest_dist_t ~= time);
-        
         new_objs = new_objs + no_obj_match;
         if no_obj_match == 1
             apex_found = 0;
@@ -70,7 +68,7 @@ function [ history, new_objs ] = update_objects( time, history, conn_comp, lookb
             apex_found = lowest_dist_apexfound;
         end
 
-        %store y of last seen instance of obj
+        % Store the object in the history 
         history{time}{obj_index} = struct('x', comp_x, 'y', comp_y, ...
             'id', lowest_dist_id, ...
             'y_apex', -1, 'apex_found', apex_found, ...

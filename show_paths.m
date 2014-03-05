@@ -9,8 +9,10 @@ function [ img ] = show_paths( img, object_history, time, initial_time )
             cur_object_count = max(size(object_history{time}));
             for obj_j=1:cur_object_count % for every current object
                 cur_obj = object_history{time}{obj_j};
+
                 if strcmp(obj.id, cur_obj.id) % if the old object is the current object
-                    img = draw_line(img, obj.x, obj.y, obj.prev_x, obj.prev_y); % draw the old object's line to its previous position
+					% draw the old object's line to its previous position
+                    img = draw_line(img, obj.x, obj.y, obj.prev_x, obj.prev_y); 
                     break
                 end
             end

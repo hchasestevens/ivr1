@@ -11,8 +11,10 @@ READJUSTMENT_THRESH = 1e-4;
 BACKGROUND_LOOKBACK = 5;
 
 OBJECT_SIZE_THRESH = [200, 5000];
-OBJECT_LINKING_DIST_THRESH = 18; % sqrt(10^2 + 10^2 + 2^3)
 OBJECT_LOOKBACK = 3;
+
+% sqrt(10^2 + 10^2 + 2^3), based on distance calculation in update_objects
+OBJECT_LINKING_DIST_THRESH = 18; 
 
 INITIAL_FRAME = 1;
 
@@ -66,6 +68,7 @@ for k = INITIAL_FRAME : frame_count
         end
     end
 
+	% Display the trajectories of detected objects
     if k > INITIAL_FRAME
         masked_frame = show_paths(masked_frame, object_history, k, INITIAL_FRAME);
     end
