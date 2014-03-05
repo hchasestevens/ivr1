@@ -22,7 +22,6 @@ IMG_WIDTH = X;
 [frame_count, x] = size(filenames);
 prev_frames = {};
 prev_frames{frame_count} = []; % preallocation
-initial_back_frames = zeros(INITIAL_MEDIAN_FRAMES, X, Y);
 object_history = {};
 object_history{frame_count} = {};
 
@@ -67,6 +66,7 @@ for k = INITIAL_FRAME : frame_count
     end
 
     % Display the frame with the mask applied
+    masked_frame = draw_line(masked_frame, 1, 1, 100, 100);
     set(h1, 'CData', masked_frame);
     drawnow('expose');
     
