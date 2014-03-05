@@ -42,7 +42,7 @@ function [ history, new_objs ] = update_objects( time, history, conn_comp, lookb
                 
                 % Calculate distance to object. Using time as well since we
                 % want older observations to have less weight
-                dist_ = sqrt((comp_x - past_obj_x)^2 + (comp_y - past_obj_y)^2 + (time - time_slice)^3);
+                dist_ = sqrt((comp_x - past_obj_x)^2 + (comp_y - past_obj_y)^2 + abs(time - time_slice)^3);
                 
                 % found new closest obj from our sordid past
                 if (dist_ < lowest_dist) && (dist_ < dist_threshold)
