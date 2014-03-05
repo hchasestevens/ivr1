@@ -7,13 +7,14 @@ grey_back = rgb2gray(frame);
 
 figure(1); h1 = imshow(apply_mask(generate_keying_mask(grey_back, grey_back, 0), grey_back));
 
-READJUSTMENT_THRESH = 1e-5;
+READJUSTMENT_THRESH = 1e-4;
 BACKGROUND_LOOKBACK = 5;
 
-OBJECT_LINKING_DIST_THRESH = 19; % sqrt(10^2 + 10^2 + 2^3)
+OBJECT_SIZE_THRESH = [200, 5000];
+OBJECT_LINKING_DIST_THRESH = 18; % sqrt(10^2 + 10^2 + 2^3)
 OBJECT_LOOKBACK = 3;
 
-INITIAL_FRAME = 200;
+INITIAL_FRAME = 1750;
 
 [X, Y] = size(grey_back);
 global IMG_WIDTH
@@ -44,7 +45,7 @@ for k = INITIAL_FRAME : frame_count
     
     % Find objects from the connected components and check if they are at
     % their apex
-    [object_history, new_objs] = update_objects(k, object_history, conn_comp, OBJECT_LOOKBACK, OBJECT_LINKING_DIST_THRESH);
+    [object_history, new_objs] = update_objects(k, object_history, conn_comp, OBJECT_LOOKBACK, OBJECT_LINKING_DIST_THRESH, OBJECT_SIZE_THRESH);
     object_history = assign_apexes(k, object_history);
     
     X = max(size(object_history{k}));

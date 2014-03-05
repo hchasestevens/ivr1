@@ -3,25 +3,19 @@ function [ history, new_objs ] = update_objects( time, history, conn_comp, lookb
     [~, Z] = size(conn_comp.PixelIdxList);
     lower_size_thresh = size_threshold(1);
     upper_size_thresh = size_threshold(2);
-          
+    
     % Get the centers of the connected components
     props = regionprops(conn_comp, 'centroid');
     cc_centers = cat(1, props.Centroid);
-
+    
     new_objs = 0;
     history{time} = {};
     
-    obj_index = 0;
-    
     for z=1:Z,
-        
-        area = max(size(conn_comp.PixelIdxList{z}));
-        if area < lower_size_thresh || area > upper_size_thresh
-            %disp(max(size(conn_comp.PixelIdxList{z})))
+        %disp(max(size(conn_comp.PixelIdxList{z})))
+        if max(size(conn_comp.PixelIdxList{z})) < lower_size_thresh || max(size(conn_comp.PixelIdxList{z})) > upper_size_thresh
             continue % 2small2careabout
         end
-        
-        obj_index = obj_index + 1;
         
         comp_x = cc_centers(z, 1);
         comp_y = cc_centers(z, 2);
@@ -71,8 +65,7 @@ function [ history, new_objs ] = update_objects( time, history, conn_comp, lookb
         end
 
         %store y of last seen instance of obj
-        history{time}{obj_index} = struct('x', comp_x, 'y', comp_y, ...
-            'id', lowest_dist_id, ...
+        history{time}{z} = struct('x', comp_x, 'y', comp_y, ... 'id', lowest_dist_id, ...
             'y_apex', -1, 'apex_found', apex_found, ...
             'idxlist', conn_comp.PixelIdxList{z}, ...
             'prev_x', lowest_dist_x, 'prev_y', lowest_dist_y, 'prev_t', lowest_dist_t);
