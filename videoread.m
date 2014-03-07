@@ -1,5 +1,5 @@
 
-file_dir = './GOPR0005/'; %put here one of the folder locations with images;
+file_dir = './GOPR0009/'; %put here one of the folder locations with images;
 filenames = dir([file_dir '*.jpg']);
 
 frame = imread([file_dir filenames(1).name]);
@@ -16,7 +16,7 @@ OBJECT_LOOKBACK = 3;
 % sqrt(10^2 + 10^2 + 2^3), based on distance calculation in update_objects
 OBJECT_LINKING_DIST_THRESH = 18; 
 
-INITIAL_FRAME = 607;
+INITIAL_FRAME = 1;
 
 [X, Y] = size(grey_back);
 global IMG_WIDTH
@@ -40,7 +40,7 @@ for k = INITIAL_FRAME : frame_count
     mask = bwdist(mask) <= 5;
     
     % Apply the mask to the frame for later display
-    masked_frame = apply_mask(mask, frame);
+    %masked_frame = apply_mask(mask, frame);
 
     % Find the connected components in the mask
     conn_comp = bwconncomp(mask);
@@ -58,7 +58,7 @@ for k = INITIAL_FRAME : frame_count
         
         if obj.apex_found == 1
             % Display a cross on the frame
-            masked_frame = insertMarker(masked_frame, [obj.x, obj.y]);
+            frame = insertMarker(frame, [obj.x, obj.y]);
             
             % Mark that the apex of this object has been processed and
             % should no longer be checked
@@ -70,11 +70,11 @@ for k = INITIAL_FRAME : frame_count
 
 	% Display the trajectories of detected objects
     if k > INITIAL_FRAME
-        masked_frame = show_paths(masked_frame, object_history, k, INITIAL_FRAME);
+        frame = show_paths(frame, object_history, k, INITIAL_FRAME);
     end
 
     % Display the frame with the mask applied
-    set(h1, 'CData', masked_frame);
+    set(h1, 'CData', frame);
     drawnow('expose');
     
     % Check if we need to pause for the apex frame

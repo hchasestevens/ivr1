@@ -2,7 +2,7 @@ function [ is_ball ] = isball(center_x, center_y, idxlist)
     % Checks if an object is a ball by checking how many of its pixels fall
     % within an imaginary circle of the same area
 
-    THRESHOLD = .905;
+    THRESHOLD = .898;
 
     is_ball = false;
     
@@ -24,10 +24,9 @@ function [ is_ball ] = isball(center_x, center_y, idxlist)
         end
         
     end
-
+    
     if double(pixels_inside)/double(area) > double(THRESHOLD)
         is_ball = true;
-        disp(double(pixels_inside)/double(area))
     end
 end
 
